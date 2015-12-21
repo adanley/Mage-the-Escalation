@@ -1,0 +1,162 @@
+/* Most of what I've been doing so far is disjointed on notebook paper, so this is where everything is
+going until I can sort it to a proper location. */
+
+float fireLaser() {
+float damage = 0.0;
+float range = getRange();
+for (int i = m_weaponsCount; i>0; i++;) 
+  {
+    m_remCap -= 3.0;
+    if (range<= 5.0 && isInArc) 
+      {
+        damage += ((rand(200))/100 *7.0;}
+    if (range > 5.0 && range <= 8.0 && isInArc) 
+      {
+        damage += ((rand(150))/100 * 7.0;}
+    if (range > 8.0 && range <= 11.0 && isInArc)
+      {
+        damage += ((rand(75))/100 * 7.0;}
+return damage;
+}
+
+// I think the previous function was rendered obsolete by the following...
+
+void fireWeapons (int weaponsFired) {
+int range = getRange(); // Too easy; I'm sure that's missing something.
+bool isInArc = checkArc();
+m_remCap -= weaponsFired * weaponCapCost;
+
+for (i = weaponsFired; i > 0; i--;) 
+  {
+    float damage = weaponDamage * (rand(rangeMin) + rangeMax)/100 * isInArc;
+    ship::damageShip(damage);
+    }
+int damageShip (float damage) 
+{
+if (m_shieldsUp) 
+  {
+    damage -= m_remShield + m_shieldResist;
+    m_remShield = 0;
+    !m_shieldsUp;}
+    else {
+    m_remShield -= damage-m_shieldResist;}
+    }
+else {
+  m_remHull -= damage/(m_armor+1);}
+if (m_remHull <= 0) {
+Ship:~Ship(target);
+cout << target << "destroyed." << endl;
+// Generate wreck here, somehow.
+}
+return 0; }
+
+int initializeShip() {
+using namespace ship;
+using namespace std;
+
+shipSelect();
+configSelect();
+moduleSelect();
+weaponsSelect();
+
+m_hull = m_baseHull; 
+m_remHull = m_hull;
+cout << "Hull integrity " << m_remHull << " of " << m_hull << "." << endl;
+pause;
+cout << "No breaches detected." << endl;
+pause;
+m_armor = m_baseArmor;
+cout << "Armor factor reported at " << m_armor << " ." << endl;
+pause;
+
+m_cap = m_baseCap;
+m_remCap = m_baseCap;
+m_capRegen = m_baseCapRegen;
+cout << "Capacitor battery is full, at " << m_remCap << " of " << m_cap <<"megajoules." << endl;
+pause;
+cout << "Our generator is able to supply " << m_capRegen << " megajoules per second." << endl;
+pause;
+
+m_thrust = m_baseThrust;
+m_remThrust = m_thrust; 
+m_maneuver = m_baseManeuver;
+cout << "Thrusters coming online..." << endl endl << "Good. Computer reports " << m_remThrust << " of " << m_thrust <<
+" kilonewtons of thrust available, with a maneuvering efficiency of << m_maneuver << "." << endl;
+pause;
+
+m_shieldResist = m_baseShieldResist;
+m_shield = m_baseShield;
+m_remShield = m_shield;
+cout << "Okay, we've cleared docking radius; shields coming online. \n \n Showing " << m_remShield << " of " << m_shield <<
+" terrawatts of energy." << endl endl;
+
+int errors = 0;
+
+if (m_baseHull != m_remHull) 
+  {errors++;}
+if (m_baseCap != m_remCap)
+  {errors ++;}
+if (m_baseThrust != m_remThrust)
+  {errors ++;}
+if m_baseShield != m_remShield) 
+  {errors ++;}
+if (m_baseArmor != m_armor)
+  {errors ++;}
+if (m_baseCapRegen != m_capRegen)
+  {errors ++;}
+if (m_baseManeuver != m_maneuver)
+  {errors ++;}
+if (m_baseShieldResist != m_shieldResist)
+  {errors ++;}
+
+if (errors > 0) {
+  cout << "Warning: At least one error occured during ship initialization. Shutting down." << endl;
+  pause;
+  EXIT_FAILURE;   }
+
+else {
+  cout << "All systems nominal. It's a beautiful day to skim the shadows!" << endl;
+  pause;
+  }
+
+return 0;
+}
+
+
+
+int shieldBoost (float overload)  { 
+// Shield boosting element - meant as a low-efficiency, high-output shield recharger.
+// More importantly, it works while the shields are absorbing high-energy attacks.
+  if (!m_shieldsUp) {
+    m_remCap -= 3+overload;
+    m_remShield += 5+overload;}
+  else {
+    m_remCap -= 3+overload;
+    m_remShield += 3+overload;}
+return 0;
+}
+
+
+int shieldHardener() {  // For the low cost of capacitor, increase shield resistance.
+  if (!hardenerOn) {
+    m_shieldResist += 1.0;
+    hardenerOn = true;
+    m_capRegen -= 1.0;
+    }
+    
+  else {
+    m_shieldResist -= 1.0;
+    m_capRegen += 1.0;
+    hardenerOn = false;
+    }
+  return 0;
+  }
+  
+  
+  int engineBooster (float overload) { // Item that increases forward thrust, but penalizes maneuverability.
+    m_thrust += 4.0 + overload;
+    m_remCap -+2.0;
+    m_maneuver += 1.0;
+    return 0;
+    }
+    
