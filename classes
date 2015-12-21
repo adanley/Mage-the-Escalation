@@ -1,0 +1,35 @@
+class Ship {
+public:
+float m_velocity[3]; // players do not directly affect their position in the play area, instead altering velocity
+float m_bearing[3]; // Position forward thrust will influence velocity
+float m_shield; // Used as a base value for max shield, which may be altered by other ship effects later.
+float m_remShield; //Remaining shield points.
+float m_shieldRegen;
+bool m_shieldsUp = false */ Ships will not regenerate while shields are up, so
+                            they will instantiate with shields down. /*
+float m_shieldResist;
+float m_Hull;
+float m_remHull;
+float m_armor;
+float m_thrust;  //Base thrust to be referenced at start of round
+float m_remThrust;
+float m_maneuver;
+float m_size;
+float m_capacitor;
+float m_remCap;
+float m_capRegen;
+
+
+private:
+float m_position[3];
+int m_weaponCount = 2;
+int m_utilities = 3;
+float m_baseShield = 20.0
+float m_baseShieldResist = 1.0;
+float m_baseHull = 15.0;
+float m_baseArmor = 1.0;
+float m_baseThrust = 8.0;
+float m_baseManeuver = 2.0;
+float m_baseSize = 2.0;
+float m_baseCap = 30.0;
+float m_baseCapRegen = 6.0;
